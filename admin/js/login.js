@@ -1,33 +1,38 @@
 $(function () {
+  // 1-给表单注册事件
+  var $from = $(".login_form");
+  var $myModal = $("#myModal");
+  var $input_txt = $(".input_txt");
+  var $input_pass = $(".input_pass");
 
-    // 1-给表单注册事件
-    var $from = $('.login_form');
-    var $myModal = $('#myModal');
+  //点击确定按钮隐藏窗口
+  $myModal.find("#sureBtn").click(function () {
+    $myModal.modal("hide");
+  });
 
-    //点击确定按钮隐藏窗口
-    $myModal.find("#sureBtn").click(function () {
-      $myModal.modal('hide');
-    })
-    
-    $from.on('submit', function (e) {
-      //如果时使用submit的方式注册事件，一定要先记得阻止以下默认行为
-      // 目的时为了防止默认提交
-      e.preventDefault();
-      $.ajax({
-        url: "http://localhost:8080/api/v1/admin/user/login",
-        type: 'post',
-        data: $(this).serialize(),
-        success: info => {
-          $myModal.modal('show');
-          $myModal.find('#modal_text').text(info.msg);
-          if (info.code === 200) {
+  $from.on("submit", function (e) {
+    //如果时使用submit的方式注册事件，一定要先记得阻止以下默认行为
+    // 目的时为了防止默认提交
+    e.preventDefault();
 
-            $myModal.on('hide.bs.modal', function () {
-              location.href = "../index.html";
-            })
-          }
+    if ($input_txt.val().length <= 0 || $input_pass.val().length <= 0) {
+      $myModal.modal("show");
+      $myModal.find("#modal_text").text("账号或者密码不能为空");
+      return;
+    }
+    $.ajax({
+      url: "http://localhost:8080/api/v1/admin/user/login",
+      type: "post",
+      data: $(this).serialize(),
+      success: (info) => {
+        $myModal.modal("show");
+        $myModal.find("#modal_text").text(info.msg);
+        if (info.code === 200) {
+          $myModal.on("hide.bs.modal", function () {
+            location.href = "../index.html";
+          });
         }
-      })
-    })
-
-  })
+      },
+    });
+  });
+});
