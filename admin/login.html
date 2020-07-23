@@ -15,6 +15,7 @@
   <script src="./libs/jquery-1.12.4.min.js"></script>
   <!-- 引入bootstrap的js文件 -->
   <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
+  <script src="./js/login.js"></script>
 </head>
 
 <body>
@@ -26,18 +27,42 @@
       </div>
     </div>
 
+
+
+
     <div class="login_form_con">
       <div class="login_title"></div>
       <form class="login_form">
         <i class="iconfont icon-user"></i>
         <i class="iconfont icon-key"></i>
-        <input type="text" class="input_txt" placeholder="邮箱/手机号" />
-        <input type="password" class="input_pass" placeholder="密码" />
+        <input type="text" name="username" class="input_txt" placeholder="邮箱/手机号" />
+        <input type="password" name="password" class="input_pass" placeholder="密码" />
         <input type="submit" class="input_sub" value="登 录" />
       </form>
     </div>
   </div>
-
+  <!-- 提示模态框 -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">登录提示</h4>
+        </div>
+        <div class="modal-body">
+          <p id="modal_text">One fine body&hellip;</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" id="sureBtn" class="btn btn-primary">确认</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 </body>
+<script>
+ 
+</script>
 
 </html>
