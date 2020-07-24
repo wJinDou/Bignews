@@ -15,7 +15,7 @@ $(function () {
     // 目的时为了防止默认提交
     e.preventDefault();
 
-    if ($input_txt.val().length <= 0 || $input_pass.val().length <= 0) {
+    if ($input_txt.val().trim().length <= 0 || $input_pass.val().trim().length <= 0) {
       $myModal.modal("show");
       $myModal.find("#modal_text").text("账号或者密码不能为空");
       return;
