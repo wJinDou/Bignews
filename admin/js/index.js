@@ -1,8 +1,7 @@
 $(function () {
   // 获取登录状态
   $.ajax({
-    url: "http://localhost:8080/api/v1/admin/user/info",
-
+    url: BigNew.user_info,
     success: (info) => {
       $(".user_info>span>i").text(info.data.nickname);
       $(".user_info>img").attr("src", info.data.userPic);
