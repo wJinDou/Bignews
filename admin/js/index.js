@@ -17,4 +17,20 @@ $(function () {
       location.href = "./login.html";
     });
   });
+
+      //左侧导航
+      var menu = $(".menu");
+      var list = menu.children('.level02').children();
+      //左侧导航栏
+      menu.children('.level01').click(function () {
+          $(this).addClass("active").siblings(".level01").removeClass('active');
+          if ($(this).index() === 1) {
+              $(this).find("b").toggleClass('rotate0');
+              menu.children(".level02").slideToggle();
+          }
+      })
+ 
+      list.click(function(){
+          $(this).addClass("active").siblings().removeClass("active");
+      })
 });
