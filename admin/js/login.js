@@ -28,9 +28,13 @@ $(function () {
         $myModal.modal("show");
         $myModal.find("#modal_text").text(info.msg);
         if (info.code === 200) {
-          $myModal.on("hide.bs.modal", function () {
-            location.href = "../index.html";
-          });
+        
+          $myModal.on('hide.bs.modal', function () {
+            localStorage.setItem("token",info.token)
+            location.href = "./index.html";
+          })
+       }
+
         }
       },
     });
