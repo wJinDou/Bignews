@@ -23,7 +23,8 @@ $(function () {
           if (info.code === 200) {
 
             $myModal.on('hide.bs.modal', function () {
-              location.href = "../index.html";
+              localStorage.setItem("token",info.token)
+              location.href = "./index.html";
             })
           }
         }
