@@ -15,7 +15,10 @@ $(function () {
     // 目的时为了防止默认提交
     e.preventDefault();
 
-    if ($input_txt.val().trim().length <= 0 || $input_pass.val().trim().length <= 0) {
+    if (
+      $input_txt.val().trim().length <= 0 ||
+      $input_pass.val().trim().length <= 0
+    ) {
       $myModal.modal("show");
       $myModal.find("#modal_text").text("账号或者密码不能为空");
       return;
@@ -28,13 +31,10 @@ $(function () {
         $myModal.modal("show");
         $myModal.find("#modal_text").text(info.msg);
         if (info.code === 200) {
-        
-          $myModal.on('hide.bs.modal', function () {
-            localStorage.setItem("token",info.token)
+          $myModal.on("hide.bs.modal", function () {
+            localStorage.setItem("token", info.token);
             location.href = "./index.html";
-          })
-       }
-
+          });
         }
       },
     });
