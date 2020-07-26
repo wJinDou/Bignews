@@ -31,25 +31,200 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>奇趣事</td>
-                        <td>funny</td>
-                        <td class="text-center">
-                            <a href="javascript:void(0)" data-toggle="modal" class=" btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:void(0)" class="btn btn-danger btn-xs">删除</a>
-                        </td>
-                    </tr>
+
                 </tbody>
                 <tfoot>
                     <tr>
                         <td colspan="3" class="text-center">
-                            <a href="javascript:void(0)" class="btn btn-success" id="xinzengfenlei" data-toggle="modal"
-                                data-target="#myModal">新增分类</a>
+                            <button class="btn btn-success" id="xinzengfenlei" data-toggle="modal"
+                                data-target="#addModal">新增分类</button>
                         </td>
                     </tr>
+
                 </tfoot>
             </table>
         </div>
     </div>
+
+
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">添加文章类别</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="Modalform">
+                        <div class="form-group hidden ">
+                            <label for="categoryName">ID</label>
+                            <input type="text" class="form-control" id="userID" name="id" placeholder="ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="categoryName">类别名称</label>
+                            <input type="text" class="form-control" id="categoryName" name="name" placeholder="请输入文章类别">
+                        </div>
+                        <div class="form-group">
+                            <label for="categorySlug">别名</label>
+                            <input type="text" class="form-control" id="categorySlug" name="slug" placeholder="请输入文章别名">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="sureAdd">添加</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+    <div class="modal fade" id="tipDelModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">温馨提示</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="text-danger">确定删除此数据吗？&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" id="sureDel" class="btn btn-primary">确认</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <script src="./js/http.js"></script>
+    <script type="text/html" id="tpl">
+        {{each data v i }}
+        <tr>
+            <td>{{v.name}}</td>
+            <td>{{v.slug}}</td>
+            <td class="text-center">
+                <button  data-toggle="modal" data-target="#addModal" data-id="{{v.id}}" class=" btn btnEdit btn-info btn-xs">编辑</button>
+                <a href="javascript:void(0)" data-id="{{v.id}}"  class="btn btn-danger delBtn btn-xs">删除</a>
+            </td>
+        </tr>
+        {{/each}}
+    
+    </script>
+    <script>
+        //查询所有的文章列表
+        function select() {
+            $.ajax({
+                url: BigNew.category_list,
+                success: info => {
+                    // console.log(info);
+                    if (info.code === 200) {
+                        var htmlstr = template("tpl", info);
+                        $("tbody").html(htmlstr)
+                    }
+                }
+            });
+        }
+        select();
+
+
+        //添加文章列表
+        var categoryName = $("#categoryName");
+        var categorySlug = $("#categorySlug");
+
+        $("#sureAdd").click(function (e) {
+            if (categoryName.val().trim() === "" || categorySlug.val().trim() === "") {
+                return alert('不能为空');
+            }
+            $.ajax({
+                url: $("#userID").val() ? BigNew.category_edit : BigNew.category_add,
+                type: 'post',
+                data: $("#Modalform").serialize(),
+                success: info => {
+                    console.log(info);
+                    if (info.code === 201 || info.code === 200) {
+                        $("#addModal").modal("hide");
+                        select();
+                    }
+                },
+                error: err => {
+                    // console.log(err);
+                    // console.log($("#Modalform").serialize());
+                    alert(err.responseJSON.msg)
+                }
+            })
+        });
+
+
+        // 删除内容
+        let Delid;
+        $("tbody").on("click", ".delBtn", function () {
+            $("#tipDelModal").modal("show");
+            Delid = $(this).data("id");
+        })
+
+        $("#sureDel").click(function () {
+            $.ajax({
+                url: BigNew.category_delete,
+                type: "post",
+                data: {
+                    id: Delid
+                },
+                success: info => {
+                    // console.log(info);
+                    $("#tipDelModal").modal("hide");
+                    if (info.code === 204) {
+                        select();
+                    }
+                }
+            })
+        })
+
+
+        //更新文章内容-获取内容
+
+
+        $('#addModal').on("shown.bs.modal", function (e) {
+            // console.log(;
+            if (e.relatedTarget.id === "xinzengfenlei") {
+                $("#addModal").find(".modal-title").text("添加文章内容");
+                categoryName.val("").attr("placeholder", "请输入文章类别").prop("disabled", false);
+                categorySlug.val("").attr("placeholder", "请输入文章别名").prop("disabled", false);
+                $("#userID").val("");
+            } else {
+                $("#addModal").find(".modal-title").text("更新文章内容");
+                categoryName.val("").attr("placeholder", "获取中…………").prop("disabled", true);
+                categorySlug.val("").attr("placeholder", "获取中…………").prop("disabled", true);
+
+
+                $.ajax({
+                    url: BigNew.category_search,
+                    data: {
+                        id: $(e.relatedTarget).data("id")
+                    },
+                    success: info => {
+                        // console.log(info);
+                        if (info.code === 200) {
+                            categoryName.val(info.data[0].name).prop("disabled", false);
+                            categorySlug.val(info.data[0].slug).prop("disabled", false);
+                            $("#userID").val(info.data[0].id);
+                        }
+                    },
+                    error: err => {
+                        // console.log(err);
+                        alert(err.responseJSON.msg);
+                        $("#addModal").modal("hide");
+
+                    },
+
+
+                })
+            }
+        })
+
+
+    </script>
 
 </html>
