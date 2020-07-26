@@ -91,8 +91,8 @@
                     success: info => {
                         // console.log(info);
                         if (info.code === 200) {
-                            categoryName.val(info.data[0].name).prop("disabled", false);
-                            categorySlug.val(info.data[0].slug).prop("disabled", false);
+                            categoryName.val(info.data[0].name).attr("placeholder", "请输入文章类别").prop("disabled", false);
+                            categorySlug.val(info.data[0].slug).attr("placeholder", "请输入文章别名").prop("disabled", false);
                             $("#userID").val(info.data[0].id);
                         }
                     },
