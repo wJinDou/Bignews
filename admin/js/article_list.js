@@ -19,6 +19,7 @@ function getList(page, callback) {
     $.ajax({
         url: BigNew.article_query,
         data: {
+            key:$("#key").val().trim(),
             type: $("#selCategory").val(),
             state: $("#selStatus").val(),
             page: page ? page : 1,
@@ -98,6 +99,12 @@ function setPage(backdata) {
             getList(page);
             currentPage = page;
         }
+    });
+
+
+    //点击文章列表中的发布文章，让夫窗口的发表文章按钮触发点击事件
+    $("#release_btn").click(function(){
+        parent.$(".level02 li").eq(1).click();
     })
 }
 
