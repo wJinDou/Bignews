@@ -15,6 +15,7 @@
     <!-- 模板引擎 -->
     <script src="./libs/template-web.js"></script>
 
+    <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="./libs/jedate/css/jedate.css">
     <link rel="stylesheet" href="./libs/jedate/css/jeDate-test.css">
     <script src="./libs/jedate/js/jedate.js"></script>
@@ -31,7 +32,7 @@
                 <div class="form-group">
                     <label for="inputTitle" class="col-sm-2 control-label">文章标题：</label>
                     <div class="col-sm-8">
-                        <input type="text" name="title" class="form-control title" id="inputTitle" value="文章标题文字">
+                        <input type="text" name="title" class="form-control title" id="inputTitle" placeholder="文章标题文字">
                     </div>
                 </div>
                 <div class="form-group">
@@ -83,8 +84,26 @@
                 </div>
             </form>
         </div>
-        <button id="aaa">获取时间</button>
     </div>
+
+    <!-- 提示框 -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">温馨提水</h4>
+                </div>
+                <div class="modal-body">
+                    <p>One fine body&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <script src="./js/http.js"></script>
 
     <!-- 文章分类数据的模板 -->
@@ -123,7 +142,7 @@
             format: "YYYY-MM-DD",
             isinitVal: true,
             zIndex: 29999,
-            onClose:false, 
+            onClose: false,
             donefun: function (obj) {
                 // 每次改变时间时触发
                 console.log(obj);
@@ -148,6 +167,7 @@
             add();
         })
 
+
         function add(state) {
             var formData = new FormData($("#form")[0])
             // 文章内容
@@ -161,10 +181,16 @@
                 processData: false,
                 data: formData,
                 success: info => {
-                    console.log(info);
+                    // console.log(info);
+                    $("#myModal").modal("show").find(".modal-body p").text(info.msg + ",即将跳转至文章列表");
+                    setTimeout(() => {
+                        parent.$(".level02 li").eq(0).click();
+                        location.href = "./article_list.html";
+                    }, 2000)
                 },
                 error: err => {
-                    console.log(err);
+                    // console.log(err);
+                    $("#myModal").modal("show").find(".modal-body p").text(err.responseJSON.msg);
                 }
             })
         }
