@@ -69,7 +69,6 @@
 
         //更新文章内容-获取内容
 
-
         $('#addModal').on("shown.bs.modal", function (e) {
             // console.log(;
             if (e.relatedTarget.id === "xinzengfenlei") {
