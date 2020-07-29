@@ -31,7 +31,6 @@ function getList(page, callback) {
         $("tbody").html(htmlstr);
         // 设置分页
         setPage(info);
-        console.log(info);
         // console.log(info);
         // console.log(currentPage, info.data.data.length);
         if (info.data.data.length) {
