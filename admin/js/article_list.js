@@ -100,8 +100,9 @@ function setPage(backdata) {
     },
   });
 
+}
+
   //点击文章列表中的发布文章，让夫窗口的发表文章按钮触发点击事件
   $("#release_btn").click(function () {
     parent.$(".level02 li").eq(1).click();
   });
-}
