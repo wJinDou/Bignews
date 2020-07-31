@@ -29,6 +29,7 @@
     index_hotpic: baseURL + "/index/hotpic", //热点图
     index_latest: baseURL + "/index/latest", //最新咨询
     index_category: baseURL + "/index/category", //文章类型
+    index_search: baseURL + "/index/search", //文章搜索
   };
 
   //暴露接口
